@@ -1,0 +1,199 @@
+
+body {
+    background: linear-gradient(to bottom, #abdbf2, #c2dff8);
+    min-height: 100vh;
+}
+
+.service-card {
+    transition: transform 0.3s, box-shadow 0.3s;
+    cursor: pointer;
+}
+.service-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+    a[data-lightbox] img {
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    a[data-lightbox]:hover img {
+        transform: scale(1.05);
+        box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+    }
+
+    .photo-card {
+    position: relative;
+    border-radius: 12px;
+    overflow: hidden;
+    height: 220px;      /* altezza fissa uguale per tutti */
+    width: 100%;        /* larghezza massima colonna */
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #fff;
+}
+
+.photo-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;  /* ritaglia immagine per coprire tutto il box */
+    transition: transform 0.5s ease;
+    display: block;
+}
+
+.photo-card:hover img {
+    transform: scale(1.05);  /* zoom on hover */
+}
+
+
+    .badge-overlay {
+        position: absolute;
+        top: 12px;
+        left: 12px;
+        background: linear-gradient(135deg, rgba(0,123,255,0.85), rgba(0,123,255,0.65));
+        color: #fff;
+        padding: 6px 12px;
+        font-size: 0.8rem;
+        border-radius: 8px;
+        font-weight: 500;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+        backdrop-filter: blur(4px);
+    }
+
+    .badge-overlay i {
+        font-size: 0.9rem;
+    }
+
+
+    .image-box {
+    height: 250px; /* meno altezza per renderle più compatte */
+    max-width: 100%; /* non superare la larghezza della colonna */
+    overflow: hidden;
+    border-radius: 10px;
+    margin: 0 auto; 
+}
+    .image-box img {
+        height: 100%;
+        width: 100%;
+        object-fit: cover;
+        transition: transform 0.6s ease;
+    }
+    .image-box:hover img {
+        transform: scale(1.05);
+    }
+    .section-text {
+        font-size: 1.1rem;
+        line-height: 1.6;
+        text-align: justify;
+    }
+
+    #weather {
+    background: linear-gradient(to bottom, #87ceeb, #f0f8ff);
+    border: 1px solid #aee0f5;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    color: #003366;
+}
+
+    .star-rating {
+        color: #f8ce0b; 
+        font-size: 1.2rem;
+    }
+    .card blockquote {
+        font-style: italic;
+        color: #444;
+    }
+    .card-footer {
+        font-weight: 600;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    #calendar {
+    max-width: 1100px;
+    margin: 0 auto;
+    background: #ffffff;
+    padding: 18px;
+    border-radius: 12px;
+    box-shadow: 0 8px 20px rgba(13, 110, 253, 0.06);
+}
+
+/* toolbar */
+.fc .fc-toolbar-title {
+    font-weight: 700;
+    color: #0d6efd;
+    font-size: 1.35rem;
+}
+.fc .fc-toolbar .fc-button {
+    border-radius: 8px;
+    border: none;
+    box-shadow: none;
+}
+.fc .fc-button-primary {
+    background: linear-gradient(180deg,#0d6efd,#0b5ed7);
+    color: #fff;
+}
+
+/* evento pill */
+.fc .fc-daygrid-event {
+    border: none;
+    padding: 6px 8px;
+    border-radius: 8px;
+    font-size: 0.9rem;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+    color: #fff !important;
+}
+
+/* cal page mobile */
+@media (max-width: 768px) {
+    #calendar { padding: 10px; }
+}
+
+/* loading spinner posizione */
+#calendar-loading { z-index: 1000; }
+
+/* more link */
+.fc .fc-daygrid-more-link {
+    color: #0d6efd;
+    font-weight: 600;
+}
+
+/* piccolo effetto hover sugli eventi */
+.fc-daygrid-event:hover {
+    transform: translateY(-2px);
+    transition: transform .18s ease;
+}
+
+
+/* Modifica larghezza dropdown per renderlo più elegante */
+.dropdown-menu {
+    min-width: 320px !important;
+    padding: 1rem !important;
+    z-index: 1050; /* Assicura che il dropdown sia sotto il calendario */
+}
+
+/* Input più compatti nel form */
+.dropdown-menu .form-control, 
+.dropdown-menu .form-select {
+    font-size: 0.9rem;
+}
+
+/* Mantieni il bottone piena larghezza e leggibile */
+.dropdown-menu .btn {
+    font-weight: 600;
+}
+
+/* Aggiungi margini più uniformi */
+.dropdown-menu .mb-3 {
+    margin-bottom: 0.75rem !important;
+}
+
+.flatpickr-calendar {
+    z-index: 9999 !important;
+}
+.flatpickr-calendar.open {
+    z-index: 9999 !important;
+}
+
