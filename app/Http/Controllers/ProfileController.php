@@ -12,29 +12,35 @@ class ProfileController extends Controller
     // Mostra il profilo
     public function show()
     {
-        return view('profile.show');
+        return view('user.dashboard');
     }
 
     // Mostra il form di modifica
-    public function edit()
+    public function edit(Request $request)
     {
-        return view('profile.edit');
+        $user = $request->user();
+        return view('user.profile.edit', compact('user'));
     }
 
-    // Aggiorna le informazioni del profilo
-    public function update(Request $request)
+   public function update(Request $request)
     {
         $user = Auth::user();
 
         $request->validate([
-            'name' => 'required|string|max:255',
+            'nome' => 'required|string|max:255',
+            'cognome' => 'required|string|max:255',
+            'username' => 'required|string|max:255|unique:users,username,' . $user->id,
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
-            'phone' => 'nullable|string|max:20',
+            'telefono' => 'nullable|string|max:20',
         ]);
 
-        $user->name = $request->name;
+        // Assegna i dati validati
+        $user->nome = $request->nome;
+        $user->cognome = $request->cognome;
+        $user->username = $request->username;
         $user->email = $request->email;
-        $user->phone = $request->phone;
+        $user->telefono = $request->telefono;
+
         $user->save();
 
         return redirect()->route('profile.show')->with('success', 'Profilo aggiornato con successo.');

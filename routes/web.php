@@ -16,11 +16,12 @@ use App\Http\Controllers\Auth\SocialController;
 
 Route::middleware(['auth', 'verified', 'role:admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/dashboard', [AdminController::class, 'dashboard'])->name('dashboard');
-    Route::get('/prenotazioni', [PrenotazioneController::class, 'index'])->name('prenotazioni.index');
+    //Route::get('/prenotazioni', [PrenotazioneController::class, 'index'])->name('prenotazioni.index');
     Route::post('/prenotazione', [PrenotazioneController::class, 'store'])->name('prenotazione.store');
     Route::patch('/prenotazioni/{id}/stato', [PrenotazioneController::class, 'updateStato'])->name('prenotazioni.updateStato');
     Route::get('/prenotazioni/{id}', [PrenotazioneController::class, 'show'])->name('prenotazioni.show');
     Route::get('/admin/prenotazioni', [PrenotazioneController::class, 'index'])->name('admin.prenotazioni.index');
+    Route::get('/prenotazioni', [PrenotazioneController::class, 'adminIndex'])->name('prenotazioni.index');
     Route::get('/calendario', [PrenotazioneController::class, 'indexCalendario'])->name('calendario');
 });
 
@@ -72,7 +73,7 @@ Route::middleware(['auth'])->group(function () {
 
 
 
-// ✅ ROTTE USER (per utenti normali autenticati)
+// ROTTE USER (per utenti normali autenticati)
 Route::middleware(['auth', 'verified', 'role:user'])->prefix('user')->name('user.')->group(function () {
     Route::get('/dashboard', function () {
         return view('user.dashboard');
