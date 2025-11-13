@@ -230,6 +230,6 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <!-- Google Maps Places -->
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBClK3qPwdnVWNF5cbnMzngxk6_5DYM3ss&libraries=places&callback=initAutocomplete" async defer></script>
+<script src="https://maps.googleapis.com/maps/" async defer></script>
 
 @endsection
