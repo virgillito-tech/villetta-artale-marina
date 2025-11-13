@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use App\Models\Prenotazione; // supponendo tu abbia un modello Prenotazione
+use App\Models\Prenotazione; 
 use App\Models\User;
 
 class UserController extends Controller
@@ -20,8 +20,9 @@ class UserController extends Controller
      */
     public function dashboard()
     {
+        $locale = app()->getLocale();
         $user = Auth::user();
-        return view('user.dashboard', compact('user'));
+        return view($locale . '.user.dashboard', compact('user', 'locale'));
     }
 
     /**
@@ -29,51 +30,12 @@ class UserController extends Controller
      */
     public function prenotazioni()
     {
+        $locale = app()->getLocale();
         $user = Auth::user();
         $prenotazioni = Prenotazione::where('user_id', $user->id)->orderBy('check_in', 'desc')->get();
 
-        return view('user.prenotazioni', compact('prenotazioni'));
+        return view($locale . '.user.prenotazioni', compact('prenotazioni', 'locale'));
     }
 
-    /**
-     * Modifica profilo
-     */
-    public function editProfile()
-    {
-        $user = Auth::user();
-        return view('user.edit_profile', compact('user'));
-    }
 
-    /**
-     * Aggiorna profilo
-     */
-    public function updateProfile(Request $request)
-    {
-        $user = Auth::user();
-
-        $request->validate([
-            'nome' => 'required|string|max:255',
-            'cognome' => 'required|string|max:255',
-            'telefono' => 'nullable|string|max:25',
-            'indirizzo' => 'nullable|string|max:255',
-            'username' => 'required|string|max:255|unique:users,username,'.$user->id,
-            'email' => 'required|email|max:255|unique:users,email,'.$user->id,
-            'password' => 'nullable|string|min:8|confirmed'
-        ]);
-
-        $user->nome = $request->nome;
-        $user->cognome = $request->cognome;
-        $user->telefono = $request->telefono;
-        $user->indirizzo = $request->indirizzo;
-        $user->username = $request->username;
-        $user->email = $request->email;
-
-        if($request->filled('password')){
-            $user->password = bcrypt($request->password);
-        }
-
-        $user->save();
-
-        return redirect()->route('user.dashboard')->with('success', 'Profilo aggiornato con successo!');
-    }
 }

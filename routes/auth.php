@@ -23,27 +23,34 @@ Route::middleware('guest')->group(function () {
     Route::post('login', [AuthenticatedSessionController::class, 'store']);
 
     Route::get('forgot-password', [PasswordResetLinkController::class, 'create'])
+    ->middleware('web', \App\Http\Middleware\SetLocale::class)
         ->name('password.request');
 
     Route::post('forgot-password', [PasswordResetLinkController::class, 'store'])
+    ->middleware('web', \App\Http\Middleware\SetLocale::class)
         ->name('password.email');
 
     Route::get('reset-password/{token}', [NewPasswordController::class, 'create'])
+    ->middleware('web', \App\Http\Middleware\SetLocale::class)
         ->name('password.reset');
 
     Route::post('reset-password', [NewPasswordController::class, 'store'])
+    ->middleware('web', \App\Http\Middleware\SetLocale::class)
         ->name('password.store');
 });
 
 Route::middleware('auth')->group(function () {
     Route::get('verify-email', EmailVerificationPromptController::class)
+    ->middleware('web', \App\Http\Middleware\SetLocale::class)
         ->name('verification.notice');
 
     Route::get('verify-email/{id}/{hash}', VerifyEmailController::class)
+    ->middleware('web', \App\Http\Middleware\SetLocale::class)
         ->middleware(['signed', 'throttle:6,1'])
         ->name('verification.verify');
 
     Route::post('email/verification-notification', [EmailVerificationNotificationController::class, 'store'])
+    ->middleware('web', \App\Http\Middleware\SetLocale::class)
         ->middleware('throttle:6,1')
         ->name('verification.send');
 
@@ -52,7 +59,7 @@ Route::middleware('auth')->group(function () {
 
     Route::post('confirm-password', [ConfirmablePasswordController::class, 'store']);
 
-    Route::put('password', [PasswordController::class, 'update'])->name('password.update');
+    // Route::put('password', [PasswordController::class, 'update'])->name('password.update');
 
     Route::post('logout', [AuthenticatedSessionController::class, 'destroy'])
         ->name('logout');

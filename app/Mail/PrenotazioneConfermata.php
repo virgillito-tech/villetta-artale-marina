@@ -26,8 +26,10 @@ class PrenotazioneConfermata extends Mailable
 
     public function content(): Content
     {
+        $locale = app()->getLocale();
         return new Content(
-            view: 'emails.prenotazione-confermata',
+            view: $locale . '.emails.prenotazione-confermata',
         );
     }
+
 }

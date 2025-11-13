@@ -8,6 +8,7 @@ class GalleriaController extends Controller
 {
     public function index()
     {
-        return view('galleria');
+        $locale = app()->getLocale();
+        return view($locale . '.galleria', compact('locale'));
     }
 }

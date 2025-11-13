@@ -11,6 +11,7 @@ class PrezzoGiornalieroController extends Controller
 {
     public function index()
     {
+        $locale = app()->getLocale();
         $prezzi = PrezzoGiornaliero::orderBy('data')->get();
         
         // Calcola statistiche
@@ -27,7 +28,7 @@ class PrezzoGiornalieroController extends Controller
             ];
         }
 
-        return view('prezzi.index', compact('prezzi', 'stats'));
+        return view($locale . '.prezzi.index', compact('prezzi', 'stats', 'locale'));
     }
 
     public function store(Request $request)
@@ -105,6 +106,9 @@ class PrezzoGiornalieroController extends Controller
                 'message' => 'Prezzo aggiornato con successo'
             ]);
         }
+
+        Log::info('UPDATE chiamata con data:', ['param' => $data]);
+        Log::info('Body ricevuto:', $request->all());
 
         return redirect()->route('prezzi.index')->with('success', 'Prezzo aggiornato con successo');
     }

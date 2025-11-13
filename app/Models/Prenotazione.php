@@ -12,7 +12,15 @@ class Prenotazione extends Model
 
     protected $fillable = [
         'data_inizio', 'data_fine', 'nome', 'email', 'telefono',
-        'numero_stanze', 'numero_persone', 'note', 'stato'
+        'numero_stanze', 'numero_persone', 'note', 'stato', 'confermata_da_id',
+        'tipo_pagamento', 'prezzo_totale', 'payment_gateway_id'
+    ];
+
+    protected $casts = [
+        'confermata_da_id' => 'integer',
+        'numero_stanze' => 'integer',
+        'numero_persone' => 'integer',
+        'prezzo_totale' => 'integer',
     ];
 
     public function getCodicePrenotazioneAttribute()

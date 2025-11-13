@@ -14,8 +14,11 @@ class EmailVerificationPromptController extends Controller
      */
     public function __invoke(Request $request): RedirectResponse|View
     {
+        $locale = session('locale', config('app.locale'));
+
         return $request->user()->hasVerifiedEmail()
-                    ? redirect()->intended(route('dashboard', absolute: false))
-                    : view('auth.verify-email');
+            ? redirect()->intended(route('home', absolute: false))
+            : view($locale . '.auth.verify-email', compact('locale'));
     }
+
 }

@@ -8,7 +8,8 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return view('home');
+        $locale = app()->getLocale();
+        return view($locale . '.home', compact('locale'));
     }
 
     

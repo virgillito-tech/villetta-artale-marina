@@ -19,6 +19,34 @@ return [
         'secret' => env('STRIPE_SECRET'),
     ],
 
+//     'paypal' => [
+//     'client_id' => env('PAYPAL_CLIENT_ID'),
+//     'secret' => env('PAYPAL_CLIENT_SECRET'),
+//     'mode' => env('PAYPAL_MODE', 'sandbox'),
+// ],
+
+// in /config/services.php
+
+'paypal' => [
+    'mode' => env('PAYPAL_MODE', 'sandbox'),
+    'sandbox' => [
+        'client_id' => env('PAYPAL_CLIENT_ID'),
+        'client_secret' => env('PAYPAL_CLIENT_SECRET'),
+        'app_id' => 'APP-80W284485P519543T',
+    ],
+    'live' => [
+        'client_id' => env('PAYPAL_LIVE_CLIENT_ID'),
+        'client_secret' => env('PAYPAL_LIVE_CLIENT_SECRET'),
+        'app_id' => '',
+    ],
+    'payment_action' => 'Sale',
+    'currency' => 'EUR',
+    'locale' => 'it_IT',
+    'validate_ssl' => true,
+    'notify_url' => '', 
+],
+
+
     'postmark' => [
         'token' => env('POSTMARK_TOKEN'),
     ],
@@ -43,14 +71,14 @@ return [
     'google' => [
         'client_id' => env('GOOGLE_CLIENT_ID'),
         'client_secret' => env('GOOGLE_CLIENT_SECRET'),
-        'redirect' => env('APP_URL') . '/auth/google/callback',
+        'redirect' => env('GOOGLE_REDIRECT'),
     ],
 
-    'apple' => [
-        'client_id' => env('APPLE_CLIENT_ID'),
-        'client_secret' => env('APPLE_CLIENT_SECRET'),
-        'redirect' => env('APP_URL') . '/auth/apple/callback',
-    ],
+    // 'apple' => [
+    //     'client_id' => env('APPLE_CLIENT_ID'),
+    //     'client_secret' => env('APPLE_CLIENT_SECRET'),
+    //     'redirect' => env('APP_URL') . '/auth/apple/callback',
+    // ],
 
 
 ];

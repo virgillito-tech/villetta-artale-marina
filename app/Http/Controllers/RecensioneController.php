@@ -10,11 +10,12 @@ class RecensioneController extends Controller
 {
     public function index()
     {
+        $locale = app()->getLocale();
         // Prendi tutte le recensioni, più recenti prima
         $recensioni = Recensione::latest()->get();
 
         // Passa la variabile alla view
-        return view('recensioni', compact('recensioni'));
+        return view($locale .'.recensioni', compact('recensioni', 'locale'));
     }
 
     public function store(Request $request)

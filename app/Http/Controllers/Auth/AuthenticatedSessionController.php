@@ -16,7 +16,8 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        return view('auth.login');
+        $locale = session('locale', config('app.locale'));
+        return view($locale . '.auth.login', compact('locale'));
     }
 
     /**

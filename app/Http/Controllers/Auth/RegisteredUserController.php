@@ -11,7 +11,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rule;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\DB;
 
 class RegisteredUserController extends Controller
 {
@@ -25,18 +27,19 @@ class RegisteredUserController extends Controller
 
         if (file_exists($path)) {
             $rows = array_map(function($line) {
-                return str_getcsv($line, ';'); // <-- usa ; come separatore
+                return str_getcsv($line, ';'); // usa ; come separatore
             }, file($path));
 
-            // esempio: CSV ha colonne [sigla;nome]
             foreach ($rows as $row) {
                 if (!empty($row[1])) {
-                    $nazioni[] = $row[1]; // solo il nome (Italia, Francia, ecc.)
+                    $nazioni[] = $row[1]; // solo il nome
                 }
             }
         }
 
-        return view('auth.register', compact('nazioni'));
+        $locale = session('locale', config('app.locale'));
+
+        return view($locale . '.auth.register', compact('nazioni', 'locale'));
     }
 
     /**
@@ -66,26 +69,39 @@ class RegisteredUserController extends Controller
             'password' => ['required', 'confirmed', Password::defaults()],
         ]);
 
-        $user = User::create([
-            'username' => $request->username,
-            'codice_fiscale' => strtoupper($request->codice_fiscale),
-            'nome' => $request->nome,
-            'cognome' => $request->cognome,
-            'data_nascita' => $request->data_nascita,
-            'luogo_nascita' => $request->luogo_nascita,
-            'telefono' => $request->telefono,
-            'indirizzo_residenza' => $request->indirizzo_residenza,
-            'nazionalita' => $request->nazionalita,
-            'sesso' => $request->sesso,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-            'is_admin' => false,
-        ]);
+         DB::beginTransaction();
+        try {
+            $user = User::create([
+                'username' => $request->username,
+                'codice_fiscale' => strtoupper($request->codice_fiscale),
+                'nome' => $request->nome,
+                'cognome' => $request->cognome,
+                'data_nascita' => $request->data_nascita,
+                'luogo_nascita' => $request->luogo_nascita,
+                'telefono' => $request->telefono,
+                'indirizzo_residenza' => $request->indirizzo_residenza,
+                'nazionalita' => $request->nazionalita,
+                'sesso' => $request->sesso,
+                'email' => $request->email,
+                'password' => Hash::make($request->password),
+                'is_admin' => false,
+            ]);
 
-        event(new Registered($user));
+            DB::commit();
 
-        Auth::login($user);
+            event(new Registered($user));
+            \Log::info('Dopo event Registered');
 
-        return redirect(route('welcome', absolute: false));
+            \Log::info('Prima Auth::login');
+            Auth::login($user);
+            \Log::info('Dopo Auth::login');
+
+            return redirect()->route('verification.notice')->with('success', 'Registrazione completata, verifica la tua email!');
+        } catch (\Exception $e) {
+            DB::rollback();
+            return redirect()->back()->withInput()->withErrors(['error' => 'Errore nella registrazione: ' . $e->getMessage()]);
+        }
     }
+
+    
 }

@@ -3,6 +3,12 @@ body {
     background: linear-gradient(to bottom, #abdbf2, #c2dff8);
     min-height: 100vh;
 }
+.logo-header-round {
+    width: 50px;           /* ⬅️ Imposta la larghezza che desideri */
+    height: 50px;          /* ⬅️ L'altezza DEVE essere identica alla larghezza */
+    border-radius: 50%;  /* ⬅️ Questo è il comando che lo rende rotondo! */
+    object-fit: cover;   /* ⬅️ Impedisce all'immagine di deformarsi/schiacciarsi */
+}
 
 .service-card {
     transition: transform 0.3s, box-shadow 0.3s;

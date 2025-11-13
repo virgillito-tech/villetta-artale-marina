@@ -19,6 +19,14 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        // \Socialite::extend('apple', function ($app) {
+        //     $config = $app['config']['services.apple'];
+        //     return (new \SocialiteProviders\Apple\Provider(
+        //         $config['client_id'],
+        //         $config['client_secret'],
+        //         $config['redirect']
+        //     ))->setHttpClient(new \GuzzleHttp\Client());
+        // });
     }
+
 }

@@ -21,6 +21,9 @@ class AdminController extends Controller
             ->take(5)
             ->get();
 
-        return view('admin.dashboard', compact('stats', 'prenotazioni_recenti'));
+        //return view('admin.dashboard', compact('stats', 'prenotazioni_recenti'));
+        $locale = app()->getLocale(); // recupera lingua corrente (es: 'it' o 'en')
+
+        return view($locale . '.admin.dashboard', compact('stats', 'prenotazioni_recenti', 'locale'));
     }
 }

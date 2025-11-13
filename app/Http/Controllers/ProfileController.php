@@ -1,5 +1,4 @@
 <?php
-
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
@@ -9,61 +8,59 @@ use Illuminate\Validation\Rules\Password;
 
 class ProfileController extends Controller
 {
-    // Mostra il profilo
-    public function show()
+    // public function __construct()
+    // {
+    //     $this->middleware('auth');
+    //     $this->middleware('verified');
+    // }
+
+    public function dashboard()
     {
-        return view('user.dashboard');
+        $locale = app()->getLocale();
+        $user = Auth::user();
+        return view($locale . '.user.dashboard', compact('user', 'locale'));
     }
 
-    // Mostra il form di modifica
-    public function edit(Request $request)
+    public function edit()
     {
-        $user = $request->user();
-        return view('user.profile.edit', compact('user'));
+        $locale = app()->getLocale();
+        $user = Auth::user();
+        return view($locale . '.user.profile.edit', compact('user', 'locale'));
     }
 
-   public function update(Request $request)
+    public function update(Request $request)
     {
         $user = Auth::user();
-
-        $request->validate([
+        $validated = $request->validate([
             'nome' => 'required|string|max:255',
             'cognome' => 'required|string|max:255',
             'username' => 'required|string|max:255|unique:users,username,' . $user->id,
             'email' => 'required|email|max:255|unique:users,email,' . $user->id,
             'telefono' => 'nullable|string|max:20',
+            'indirizzo_residenza' => 'nullable|string|max:255',
         ]);
-
-        // Assegna i dati validati
-        $user->nome = $request->nome;
-        $user->cognome = $request->cognome;
-        $user->username = $request->username;
-        $user->email = $request->email;
-        $user->telefono = $request->telefono;
-
-        $user->save();
-
-        return redirect()->route('profile.show')->with('success', 'Profilo aggiornato con successo.');
+        $user->update($validated);
+        return redirect()->route('user.dashboard')->with('success', 'Profilo aggiornato con successo!');
     }
 
-    // Aggiorna la password
+    public function editPassword()
+    {
+        $locale = app()->getLocale();
+        return view($locale . '.user.profile.password', compact('locale'));
+    }
+
     public function updatePassword(Request $request)
     {
-        $user = Auth::user();
-
         $request->validate([
-            'current_password' => ['required'],
-            'new_password' => ['required', 'confirmed', Password::min(8)->mixedCase()->numbers()],
+            'current_password' => ['required', 'current_password'],
+            'password' => ['required', 'confirmed', 'min:8'],
         ]);
 
-        // Controlla la password attuale
-        if (!Hash::check($request->current_password, $user->password)) {
-            return back()->withErrors(['current_password' => 'La password attuale non è corretta.']);
-        }
-
-        $user->password = Hash::make($request->new_password);
+        $user = auth()->user();
+        $user->password = bcrypt($request->password);
         $user->save();
 
-        return redirect()->route('profile.show')->with('success', 'Password aggiornata con successo.');
+        return redirect()->route('profile.password.edit')->with('success', 'Password aggiornata con successo!');
     }
+
 }
